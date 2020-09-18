@@ -4,26 +4,28 @@ $ServiceName                = "BC160"
 $DatabaseName               = "GTOGHERMIGRATEDB_14to16_WORKV6" 
 $DatabaseServer             = "ARQ-MBG"
 
-$DvdBC16                    = "C:\Temp\Dynamics.365.BC.15953.W1.DVD_BC16"
-$BC16Version                = "16.5.15941"
+$DvdBC16                    = "C:\Temp\Dynamics.365.BC.15953.W1.DVD_BC16"       #Location of your DVD Installation of BC160
+$BC16Version                = "16.5.15941"                                      #Your Application Build no from https://support.microsoft.com/en-gb/help/4549687/released-updates-for-microsoft-dynamics-365-business-central-2020
 
-$CustomAppName              = "BC14toBC15"
-$CustomAppPath              = "C:\Users\Marco Bagatelli\Documents\AL\Vamos\BC14toBC15\Growing Together_BC14toBC15_1.0.0.0.app"
+################ Customization Extensions Info ################
+$CustomAppName              = "BC14toBC15"                                      
+$CustomAppPath              = "C:\Users\Marco Bagatelli\Documents\AL\Vamos\BC14toBC15\Growing Together_BC14toBC15_1.0.0.0.app"    #Empty Extension
 $CustomAppPath2             = "C:\Users\Marco Bagatelli\Documents\AL\Vamos\BC14toBC15\Growing Together_BC14toBC15_1.0.0.1.app"
+
 $DeveloperLicenseFile       = "C:\Temp\MSDynLicenses\5190281 - D365BC 160 DEV.flf"
 
 $CustomSysPathApp           = "C:\Users\Marco Bagatelli\Documents\AL\Vamos\SysApplication\Microsoft_System Application_14.0.0.0.app"
 $CustomBasePathApp          = "C:\Users\Marco Bagatelli\Documents\AL\Vamos\BaseApp\Microsoft_Base Application_14.0.0.0.app"
  
-#$TableMigrationExtID        = 335d5fa2-777c-4340-a45e-8b92cf21860e
-$TableMigrationExtPath      = "C:\Users\Marco Bagatelli\Documents\AL\Vamos\MicrosoftBC14to16\Marco Bagatelli_MicrosoftBC14toBC16_1.0.0.0.app"
-$TableMigrationExtPath2     = "C:\Users\Marco Bagatelli\Documents\AL\Vamos\MicrosoftBC14to16\Marco Bagatelli_MicrosoftBC14toBC16_1.0.0.1.app"
+$TableMigrationExtID        = "335d5fa2-777c-4340-a45e-8b92cf21860e"
 $TableMigrationExtName      = "MicrosoftBC14toBC16"
+$TableMigrationExtPath      = "C:\Users\Marco Bagatelli\Documents\AL\Vamos\MicrosoftBC14to16\Marco Bagatelli_MicrosoftBC14toBC16_1.0.0.0.app"
+$TableMigrationExtPath2     = "C:\Users\Marco Bagatelli\Documents\AL\Vamos\MicrosoftBC14to16\Marco Bagatelli_MicrosoftBC14toBC16_1.0.0.1.app" #Migration.json Package
 $TableMigrationExtPublisher = "Marco Bagatelli"
 
 $Minutes                    = 4 #How long to wait for the Data Upgrade
 
-###################### No Need to Change ########################
+###################### No Need to Change!! ########################
 
 $UpgradeBreak               = $Minutes * 60
 $BaseAppPath                = "$DvdBC16\applications\BaseApp\Source\Microsoft_Base Application.app"
@@ -43,8 +45,7 @@ Write-Host "2. Set the server instance to connect to the application database."
 Set-NAVServerConfiguration -ServerInstance $ServiceName -KeyName DatabaseName -KeyValue $DatabaseName
 
 Write-Host "3. Configure the DestinationAppsForMigration setting of the server instance to table migration extension."
-Set-NAVServerConfiguration -ServerInstance $ServiceName -KeyName "DestinationAppsForMigration" -KeyValue '[{"appId":"335d5fa2-777c-4340-a45e-8b92cf21860e", "name":"MicrosoftBC14toBC16", "publisher": "Marco Bagatelli" }]'
-#Set-NAVServerConfiguration -ServerInstance $ServiceName -KeyName "DestinationAppsForMigration" -KeyValue '[{"appId":$TableMigrationExtID, "name":$TableMigrationExtName, "publisher": $TableMigrationExtPublisher }]'
+Set-NAVServerConfiguration -ServerInstance $ServiceName -KeyName "DestinationAppsForMigration" -KeyValue "[{""appId"": ""$TableMigrationExtID"", ""name"": ""$TableMigrationExtName"", ""publisher"": ""$TableMigrationExtPublisher"" }]"
 
 Write-Host "4. Disable task scheduler on the server instance for purposes of upgrade."
 Set-NavServerConfiguration -ServerInstance $ServiceName -KeyName "EnableTaskScheduler" -KeyValue false
